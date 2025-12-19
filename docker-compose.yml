@@ -1,0 +1,112 @@
+services:
+  web:
+    image: nginx:latest
+    volumes:
+      - ./:/var/www
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    #! SSL = 443 -> azt is ki kell nyitni ilyenkor
+    # PORTS -> le is exposoeolja a portot
+    ports:
+      - "80:80"
+    networks:
+      - laravel-development
+    depends_on:
+      - php-fpm
+
+  php-fpm:
+    build:
+      context: .
+      dockerfile: Dockerfile.laravel
+    env_file:
+      - .env
+    user: "${UID:-1000}:${GID:-1000}"
+    volumes:
+      - ./:/var/www
+    networks:
+      - laravel-development
+    depends_on:
+      - postgres
+    environment:
+      TZ: Europe/Budapest
+
+  workspace:
+    build:
+      context: .
+      dockerfile: ./docker/development/workspace/Dockerfile
+      args:
+        UID: ${UID:-1000}
+        GID: ${GID:-1000}
+        XDEBUG_ENABLED: false
+    # Teletype: virtuális terminál, hogy majd a php artisan és ezeket tudjam használni
+    tty: true
+    # Hogy be lehessen lépni a containerbe majd
+    stdin_open: true
+    env_file:
+      - .env
+    # Ebben nem vagyok biztos, hogy nem-e ./:var/www/public
+    volumes:
+      - ./:/var/www
+    networks:
+      - laravel-development
+    environment:
+      TZ: Europe/Budapest
+
+  postgres:
+    image: postgres:16
+    ports:
+      - "${PSQL_PORT:-5432}:5432"
+    environment:
+      POSTGRES_DB: ${PSQL_DB}
+      POSTGRES_USER: ${PSQL_UNAME}
+      POSTGRES_PASSWORD: ${PSQL_PASS}
+      TZ: Europe/Budapest
+      # A custom postgresql.conf betöltése
+    volumes:
+      - /Users/bencsodev/Downloads/laravel-project-api-main/postgres-data:/var/lib/postgresql/data
+      - ./postgresql.conf:/etc/postgresql.conf:ro
+      # A custom postgresql.conf betöltése command
+      #? Doksi: configs
+    command: postgres -c config_file=/etc/postgresql.conf
+    networks:
+      - laravel-development
+
+  redis:
+    image: redis:alpine
+    networks:
+      - laravel-development
+
+  pgadmin:
+    image: pgadmin4:latest
+    container_name: postgres-admin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASS}
+    ports:
+      - ${PGADMIN_PORT:-8080}:80
+    depends_on:
+      postgres:
+        #! Health check, utána nézni, hogyan müködik
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - backend
+
+  react_native:
+    #? Kész: Itt is lehet EXPOSE-olni, jobb mint a Dockerfile-ban =>  "átláthatóbb"
+    #  EXPOSE = Lefoglalás a PORTOT , ports <-> expose: portsnál port nyitás
+    ports:
+      - "80:80"
+    volumes:
+      - .:/app
+      - ./node_modules:/app/node_modules
+    environment:
+      NODE_ENV: development
+    stdin_open: true
+    tty: true
+    build:
+      context: .
+      dockerfile: Dockerfile.react
+    command: npm start
+
+networks:
+  laravel-development:
