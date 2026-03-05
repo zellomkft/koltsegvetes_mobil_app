@@ -1,5 +1,5 @@
 # PHP-FPM
-FROM php:8.3-fpm-alpine
+FROM php:8.3-fpm
 
 # Rendszer csomagok és PHP extensionök telepítése (ZIP, CURL, GIT, PostgreSQL)
 RUN apt-get update && apt-get install -y \
@@ -8,7 +8,10 @@ RUN apt-get update && apt-get install -y \
     libpq-dev \
     curl \
     git \
-&& apt-get clean && rm -rf /var/lib/apt/lists/*
+    bash \
+    unzip \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/*
 # Törli a felesleges dolgokat -> apg-get clean ....
 
 
