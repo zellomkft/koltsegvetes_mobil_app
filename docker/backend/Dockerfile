@@ -18,7 +18,7 @@ RUN apt-get update && apt-get install -y \
 RUN docker-php-ext-install zip pdo pdo_pgsql
 
 # Munkakönyvtár beállítása
-WORKDIR /var/www
+WORKDIR /var/www/backend
 
 # Composer telepítés | Másik módszerrel:
 # COPY --from=composer:latest /usr/bin/composer /usr/bin/composer

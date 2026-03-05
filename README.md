@@ -62,3 +62,14 @@ server {
 Forrás:
 - *Medium*
 - *Serverion nginx config generátor:* https://www.serverion.com/nginx-config/#?0.domain=localhost&0.index=index.html&0.fallback_html
+
+
+-laravel telepítés:
+    - docker compose exec workspace composer create-project laravel/laravel backend
+
+- react telepítés:
+    - npx @react-native-community/cli init frontend
+    - 
+
+utána:
+- docker compose up
