@@ -71,4 +71,3 @@ utána:
 
 -laravel telepítés:
     - docker compose exec workspace composer create-project laravel/laravel .
-
