@@ -1,4 +1,4 @@
-#TODO: Utánanézni compose overwrite !!
+#TODO: Utánanézni compose overwrite (!!)
 services:
   web:
     image: nginx:latest

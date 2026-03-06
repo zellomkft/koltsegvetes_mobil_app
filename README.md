@@ -1,6 +1,6 @@
 ```conf
 server {
-    listen 80; 
+    listen 80;
     server_name localhost;
     root /var/www/app/public;
 
@@ -36,16 +36,16 @@ server {
 - **index:** -> index fájlok
 - **location /:** -> hely
 - **try_files** -> fájl keresés:
-    - ez úgy müködik, hogy megnézzük elsőnek hogy van e ilyen fájl, után hogy mappa és végül ha nincs semmi akkor átirányít az index.php-ra
-        - Azt olvastam, hogy ez a beállítás Larvel-hez kell, és ez a: front controller pattern
+  - ez úgy müködik, hogy megnézzük elsőnek hogy van e ilyen fájl, után hogy mappa és végül ha nincs semmi akkor átirányít az index.php-ra
+    - Azt olvastam, hogy ez a beállítás Larvel-hez kell, és ez a: front controller pattern
 - **fastcgi:**
-        -> Alap FastCGI környezeti változók, utána pedig a php-fpm szükséges változók
-        -> PHP-FPM szerver címe és portja (default: 9000 PORT),
-        -> megmondjuk például melyik fájlt futtassa a PHP-FPM
+  -> Alap FastCGI környezeti változók, utána pedig a php-fpm szükséges változók
+  -> PHP-FPM szerver címe és portja (default: 9000 PORT),
+  -> megmondjuk például melyik fájlt futtassa a PHP-FPM
 
 - **Logolások:**
-    - error_log: -> hiba napló helye
-    - access_log: -> hozzáférési napló helye
+  - error_log: -> hiba napló helye
+  - access_log: -> hozzáférési napló helye
 
 ```
     location ~ /\.(env|git|htaccess) {
@@ -60,14 +60,38 @@ server {
 > Tiltja a hozzáférést az env, git, htaccess, storage és vendor fileokhoz, tulajdoképpen egy .gitignore szerűség (?!)
 
 Forrás:
-- *Medium*
-- *Serverion nginx config generátor:* https://www.serverion.com/nginx-config/#?0.domain=localhost&0.index=index.html&0.fallback_html
+
+- _Medium_
+- _Serverion nginx config generátor:_ https://www.serverion.com/nginx-config/#?0.domain=localhost&0.index=index.html&0.fallback_html
 
 - react telepítés:
-    - npx @react-native-community/cli init frontend
+  - npx @react-native-community/cli init frontend
 
 utána:
+
 - docker compose up
 
--laravel telepítés:
-    - docker compose exec workspace composer create-project laravel/laravel .
+-laravel telepítés: - docker compose exec workspace composer create-project laravel/laravel .
+
+---
+
+# Rendszertervezés - Funkció szintű
+
+- Bevételek
+  - honnan, típusok (egyszeri/rendszeres)
+  - Csoportosítás (típusok) => családi, részvények stb. csoport
+
+- Kiadások
+  - havi/rendszeres/sos -> tipizálás
+
+- Megtakarítás
+- Adott bankszámlához kapcsolás
+- Kimutatások, előreláthatósági kimutatás (időszakos / heti / havi)
+- Álmok / célok / célkítűzések
+- Popup / push notifications / triggerek
+- Widgetek
+
+- Google API
+- Tanácsadó (LLM) -> (MIT NE CSINÁLJ?!) - KÉT KÜLÖN CONTEXT -> Laravel AI kit
+
+---
